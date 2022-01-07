@@ -11,13 +11,17 @@ export function TicTacToe() {
 
   useEffect(() => {
     const winner = calculateWinner(allCells);
-    if (winner) setStatus("Winner Is: " + winner);
-    else setStatus("Current Player: " + (xIsNext ? "X" : "O"));
+    if (winner) {
+      setStatus("Winner Is: " + winner);
+      return;
+    } else setStatus("Current Player: " + (xIsNext ? "X" : "O"));
+    if (allCells.every((i) => i)) setStatus("Draw");
   }, [xIsNext, allCells]);
 
   const handleClick = (i) => {
     const newAllCells = [...allCells];
     if (calculateWinner(newAllCells) || newAllCells[i]) return;
+
     newAllCells[i] = xIsNext ? "X" : "O";
     setAllCells(newAllCells);
     setXIsNext(!xIsNext);
@@ -28,22 +32,16 @@ export function TicTacToe() {
   return (
     <div className={classesForGame.game}>
       <h2>{status}</h2>
-      <div>
-        <div style={{ display: "flex" }}>
-          <Cell value={allCells[0]} onClick={handleClick.bind(this, 0)} />
-          <Cell value={allCells[1]} onClick={handleClick.bind(this, 1)} />
-          <Cell value={allCells[2]} onClick={handleClick.bind(this, 2)} />
-        </div>
-        <div style={{ display: "flex" }}>
-          <Cell value={allCells[3]} onClick={handleClick.bind(this, 3)} />
-          <Cell value={allCells[4]} onClick={handleClick.bind(this, 4)} />
-          <Cell value={allCells[5]} onClick={handleClick.bind(this, 5)} />
-        </div>
-        <div style={{ display: "flex" }}>
-          <Cell value={allCells[6]} onClick={handleClick.bind(this, 6)} />
-          <Cell value={allCells[7]} onClick={handleClick.bind(this, 7)} />
-          <Cell value={allCells[8]} onClick={handleClick.bind(this, 8)} />
-        </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
+        {allCells.map((i, index) => {
+          return (
+            <Cell
+              value={i}
+              onClick={handleClick.bind(this, index)}
+              key={index}
+            />
+          );
+        })}
       </div>
       <Reset setAllCells={setAllCells} setXIsNext={setXIsNext} />
     </div>
