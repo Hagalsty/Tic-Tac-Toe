@@ -37,7 +37,7 @@ export function TicTacToe() {
           return (
             <Cell
               value={i}
-              onClick={handleClick.bind(this, index)}
+              onClick={handleClick.bind(null, index)}
               key={index}
             />
           );
